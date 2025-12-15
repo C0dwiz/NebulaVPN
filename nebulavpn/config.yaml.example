@@ -1,0 +1,24 @@
+server:
+  host: "0.0.0.0"
+  port: 443
+  tls:
+    cert_path: "server.crt"
+    key_path: "server.key"
+
+client:
+  server_address: "your-server.com:443"
+  local_port: 1080
+  tls_skip_verify: true  # only for testing with self-signed certificates
+
+crypto:
+  method: "chacha20-poly1305"
+  password: "your-strong-password-here"
+
+http_mask:
+  enabled: true
+  domain: "cloudflare.com"  # disguising ourselves as Cloudflare
+  user_agents:
+    - "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+    - "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
+    - "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36"
+    - "Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15"
