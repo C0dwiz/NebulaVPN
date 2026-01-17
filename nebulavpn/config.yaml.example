@@ -1,24 +1,43 @@
+# NebulaVPN Configuration Example
+# Enhanced with security and performance optimizations
+
 server:
   host: "0.0.0.0"
   port: 443
   tls:
     cert_path: "server.crt"
     key_path: "server.key"
+  # Security settings
+  max_connections: 1000        # Maximum concurrent connections
+  timeout_seconds: 30         # Connection timeout
+  allowed_ips:               # Optional: whitelist specific client IPs
+    - "192.168.1.100"
+    - "10.0.0.50"
 
 client:
   server_address: "your-server.com:443"
   local_port: 1080
-  tls_skip_verify: true  # only for testing with self-signed certificates
+  tls_skip_verify: false      # Set to true only for testing with self-signed certificates
+  # Security settings
+  timeout_seconds: 10         # Connection timeout
+  retry_attempts: 3           # Connection retry attempts
 
 crypto:
-  method: "chacha20-poly1305"
-  password: "your-strong-password-here"
+  method: "chacha20-poly1305"  # Options: "aes-256-gcm", "chacha20-poly1305"
+  password: "your-strong-password-here-min-8-chars"
 
 http_mask:
   enabled: true
-  domain: "cloudflare.com"  # disguising ourselves as Cloudflare
+  domain: "cloudflare.com"  # Disguise traffic as legitimate HTTPS
   user_agents:
-    - "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
-    - "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
-    - "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36"
-    - "Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15"
+    - "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    - "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    - "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    - "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1"
+    - "Mozilla/5.0 (iPad; CPU OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1"
+
+# Logging configuration
+logging:
+  level: "info"              # Options: "debug", "info", "warn", "error"
+  file: ""                   # Leave empty for stdout, or specify file path
+  format: "json"             # Options: "json", "text"
